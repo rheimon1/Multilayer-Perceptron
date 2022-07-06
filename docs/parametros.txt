@@ -1,0 +1,10 @@
+Tamanho das camadas
+	Entrada = 63
+	Escondida = 2
+	Saída = 7
+
+Taxa de aprendizado = 0.1
+
+Limiar do erro = 0.001
+
+Função de ativação = Sigmoid

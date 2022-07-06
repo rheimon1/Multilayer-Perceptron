@@ -1,5 +1,5 @@
 from activation_function import SigmoidActivation
-from csv_provider import CsvProvider
+from file_provider import FileProvider
 from mlp import Mlp
 import numpy as np
 
@@ -11,19 +11,19 @@ class Main:
   """
 
   def __init__(
-    self, 
-    csv_provider: CsvProvider, 
-    activation_function, 
+    self,
     input_length, 
     output_length, 
     hidden_length,
     learning_rate,
-    threshold
+    threshold,
+    file_provider: FileProvider, 
+    activation_function,
   ):
     """
     Parameters
     ----------
-    csv_provider : Instãncia de classe que possibilita manipular arquivos csv
+    file_provider : Instãncia de classe que possibilita manipular arquivos
     activation_function : Instãncia de classe que implementa função de ativação, bem como sua derivada
     input_length : Define quantos elementos terão na camada de entrada
     output_length : Define quantos elementos terão na camada de saída
@@ -32,11 +32,16 @@ class Main:
     threshold : Limite de erro
     """
 
-    self.csv_provider = csv_provider
+    self.file_provider = file_provider
 
     self.input_length = input_length
     self.output_length = output_length
     self.hidden_length = hidden_length
+
+    file_content = f"Tamanho das camadas\n\tEntrada = {input_length}\n\tEscondida = {hidden_length}\n"\
+      f"\tSaída = {output_length}\n\nTaxa de aprendizado = {learning_rate}\n\nLimiar do erro = {threshold}"\
+      f"\n\nFunção de ativação = {activation_function.get_name()}"
+    self.file_provider.write_txt("docs/parametros", file_content)
 
     self.mlp = Mlp(
       layers={
@@ -45,6 +50,7 @@ class Main:
         'hidden_length': hidden_length
       },
       activation_function=activation_function,
+      file_provider=file_provider,
       learning_rate=learning_rate,
       threshold=threshold
     )
@@ -112,14 +118,18 @@ class Main:
     path : Caminho que contém o arquivo com os dados que serão treinados
     """
 
-    dataset = self.csv_provider.load(path)
+    dataset = self.file_provider.load_csv(path)
     input_data, label_data = self.prepare_data(dataset)
     self.mlp.train(input_data, label_data)
 
-  def predict(self, path):
-    pass
+  def test_data(self, path):
+    dataset = self.file_provider.load_csv(path)
+    input_data, label_data = self.prepare_data(dataset)
+    result = self.mlp.feedforward(input_data)
+    print(result)
 
-csvProvider = CsvProvider()
-sigmoidActivation = SigmoidActivation()
-main = Main(csvProvider, sigmoidActivation,  2, 1, 2, 0.1, 1e-3)
-main.train_data('xor.csv')
+file_provider = FileProvider()
+sigmoid_activation = SigmoidActivation()
+main = Main(63, 7, 2, 0.1, 1e-3, file_provider, sigmoid_activation)
+main.train_data('caracteres-limpo')
+# main.test_data('xor')
