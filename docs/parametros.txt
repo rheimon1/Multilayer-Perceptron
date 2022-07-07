@@ -1,6 +1,6 @@
 Tamanho das camadas
 	Entrada = 63
-	Escondida = 2
+	Escondida = 15
 	Saída = 7
 
 Taxa de aprendizado = 0.1

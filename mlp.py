@@ -59,7 +59,7 @@ class Mlp:
 
   def feedforward(self, input_signal):
     """Nesse método ocorre o processe de feedforward, em que ocorrerão os processos de soma de entradas
-    ponderadas, aplicação de função de ativação para computar sinal de saída e envio para a próxima cada. 
+    ponderadas, aplicação de função de ativação para computar sinal de saída e envio para a próxima camada. 
     Isso ocorre para a camada escondida e camada de saída.
     
     Parameters

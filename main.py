@@ -109,27 +109,32 @@ class Main:
     return input_data, label_data
 
   def train_data(self, path):
-    """
-    Função que vai ler os dados de um determinado caminho, obter um dataset disso, tratar esse dataset, organizando
+    """Função que vai ler os dados de um determinado caminho, obter um dataset disso, tratar esse dataset, organizando
     os dados no formato esperado pela classe `Mlp` e vai treinar esses dados.
 
     Parameters
     ----------
-    path : Caminho que contém o arquivo com os dados que serão treinados
-    """
+    path : Caminho que contém o arquivo com os dados que serão treinados"""
 
     dataset = self.file_provider.load_csv(path)
     input_data, label_data = self.prepare_data(dataset)
     self.mlp.train(input_data, label_data)
 
   def test_data(self, path):
+    """Função que vai ler os dados de um determinado caminho, obter um dataset disso, tratar esse dataset, organizando
+    os dados no formato esperado pela classe `Mlp` e vai testar esses dados.
+
+    Parameters
+    ----------
+    path : Caminho que contém o arquivo com os dados que serão treinados"""
+
     dataset = self.file_provider.load_csv(path)
     input_data, label_data = self.prepare_data(dataset)
     result = self.mlp.feedforward(input_data)
-    print(result)
+    print(np.round_(result))
 
 file_provider = FileProvider()
 sigmoid_activation = SigmoidActivation()
-main = Main(63, 7, 2, 0.1, 1e-3, file_provider, sigmoid_activation)
+main = Main(63, 7, 15, 0.1, 1e-3, file_provider, sigmoid_activation)
 main.train_data('caracteres-limpo')
-# main.test_data('xor')
+main.test_data('caracteres-limpo')
