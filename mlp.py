@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Mlp:
   """
@@ -134,13 +135,14 @@ class Mlp:
     self.hidden_layer_bias = self.hidden_layer_bias + delta_hidden_layer_bias
 
   
-  def train(self, inputs, labels, threshold=0.1):
-    squaredError = 2 * threshold
+  def train(self, inputs, labels):
+    squaredError = 2 * self.threshold
     epochs = 0
 
     file_content_error = ""
+    chart_data = []
 
-    while(squaredError > threshold):
+    while(squaredError > self.threshold):
       squaredError = 0
 
       for i in range(len(inputs)):
@@ -156,13 +158,19 @@ class Mlp:
         
         self.backpropagation(error, input)
 
+      # Cálculo para obter o erro quadrado médio
       squaredError = squaredError / len(inputs)
-
-      print(f"Erro médio quadrado = {squaredError}")
+      print(f"Erro quadrado médio = {squaredError}")
       
+      # Acumula informações do erro para inserir posteriormente em um arquivo
       file_content_error += f"Erro médio quadrado = {squaredError}\n"
 
+      # Incrementa número de épocas
       epochs = epochs + 1
+
+      # Acumula informçações do erro obtido anteriormente para montar um gráfico
+      chart_data.append(squaredError)
+
 
     file_content_error += f"\nTotal de iterações = {epochs}"
 
@@ -174,3 +182,5 @@ class Mlp:
       f"Biases da Camada de Saída\n{self.output_layer_bias}\n\n\n"
     self.file_provider.write_txt("docs/pesos-finais", file_content_final_weights)
 
+    plt.plot(chart_data)
+    plt.savefig("docs/grafico-erro-medio-quadrado.png")

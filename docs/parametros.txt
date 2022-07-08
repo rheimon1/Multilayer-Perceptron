@@ -5,6 +5,6 @@ Tamanho das camadas
 
 Taxa de aprendizado = 0.1
 
-Limiar do erro = 0.1
+Limiar do erro = 0.01
 
 Função de ativação = Sigmoid

@@ -136,8 +136,12 @@ class Main:
         dataset = self.file_provider.load_csv(path)
         inputs, labels = self.prepare_data(dataset)
         result = self.mlp.feedforward(inputs)
-        file_content = self.format_test_results_output(labels, result)
-        self.file_provider.write_txt('docs/'+path, file_content)
+        self.content_file_test_results = ""
+        self.content_file_test_results += f"Testes para arquivo - {path}\n\n"
+        file_content_result = self.format_test_results_output(labels, result) + "\n\n"
+        self.content_file_test_results += file_content_result
+        self.content_file_test_results += f"Matriz de confusão\n{str(confusion_matrix(labels.argmax(axis=1), result.argmax(axis=1)))}"
+        self.file_provider.write_txt('docs/resultados-'+path, self.content_file_test_results)
         
     def format_test_results_output(self, labels, results):
 
@@ -176,14 +180,12 @@ class Main:
                 obtained_values_text = "Nenhum"
             result_content_file += result_text + obtained_values_text + "\n"
 
-        
-
         return result_content_file
 
 
 file_provider = FileProvider()
 sigmoid_activation = SigmoidActivation()
-main = Main(63, 15, 7, 0.1, 0.1, file_provider, sigmoid_activation)
+main = Main(63, 15, 7, 0.1, 0.01, file_provider, sigmoid_activation)
 main.train_data('caracteres-limpo')
 main.test_data('caracteres-ruido')
 main.test_data('caracteres_ruido20')
