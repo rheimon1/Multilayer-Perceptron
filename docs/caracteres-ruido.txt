@@ -1,0 +1,21 @@
+Label: A - Resultado obtido: A
+Label: B - Resultado obtido: Nenhum
+Label: C - Resultado obtido: C, D
+Label: D - Resultado obtido: J, K
+Label: E - Resultado obtido: Nenhum
+Label: J - Resultado obtido: J
+Label: K - Resultado obtido: K
+Label: A - Resultado obtido: A
+Label: B - Resultado obtido: B
+Label: C - Resultado obtido: B, C
+Label: D - Resultado obtido: Nenhum
+Label: E - Resultado obtido: B
+Label: J - Resultado obtido: J
+Label: K - Resultado obtido: K
+Label: A - Resultado obtido: A
+Label: B - Resultado obtido: B
+Label: C - Resultado obtido: C
+Label: D - Resultado obtido: Nenhum
+Label: E - Resultado obtido: Nenhum
+Label: J - Resultado obtido: J
+Label: K - Resultado obtido: K

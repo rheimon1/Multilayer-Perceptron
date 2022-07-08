@@ -106,35 +106,35 @@ class Mlp:
     input_signal : Sinal de entrada (Xi) que é dissipado para todas as unidades da camada escondida"""
   
     # Termo de informação de erro (deltinha k)
-    small_delta_k = error * self.d_activation_function(self.output_layer_in)
+    delta_k = error * self.d_activation_function(self.output_layer_in)
 
     # Cálculo da correção de pesos e bias para a camada de saída
-    delta_output_layer_weights = self.learning_rate * np.matmul(
-      self.hidden_layer_out.reshape(-1, 1), small_delta_k.reshape(1, -1)
-    )
-    delta_output_layer_bias = self.learning_rate * small_delta_k
+    delta_output_layer_weights = self.learning_rate * np.matmul(self.hidden_layer_out.reshape(-1, 1), delta_k.reshape(1, -1))
+    delta_output_layer_bias = self.learning_rate * delta_k  
 
+    # Cálculo da correção de pesos de cada unidade de saída
 
-    small_delta_in_j = np.matmul(self.output_layer_weights, small_delta_k)
-    small_delta_j = small_delta_in_j * self.d_activation_function(self.hidden_layer_in)
+    # Passo 7 do algoritmo do slide
+    # Cálculo do termo de correção de erro utilizando o termo de correção da camada posterior
+    delta_in_j = np.matmul(self.output_layer_weights, delta_k)  
+    delta_j = delta_in_j * self.d_activation_function(self.hidden_layer_in) 
 
     # Cálculo da correção de pesos e bias para a camada escondida
-    delta_hidden_layer_weights = self.learning_rate * np.matmul(
-      input_signal.reshape(-1, 1), small_delta_j.reshape(1, -1)
-    )
-    delta_hidden_layer_bias = self.learning_rate * small_delta_j
+    delta_hidden_layer_weights = self.learning_rate * np.matmul(input_signal.reshape(-1, 1), delta_j.reshape(1, -1))
+    delta_hidden_layer_bias = self.learning_rate * delta_j 
 
 
-    # Atualização dos pesos e bias que são usados nas camada de saída e na escondida. Isso envolve
-    # computar um novo valor que leva em conta o valor antigo e a correção calculada anteriormente.
+    # Passo 8 do algoritmo do slide
+    # Atualização dos pesos e bias de cada unidade da camada de saída
     self.output_layer_weights = self.output_layer_weights + delta_output_layer_weights
     self.output_layer_bias = self.output_layer_bias + delta_output_layer_bias
 
+    # Atualização dos pesos e bias de cada unidade da camada escondida
     self.hidden_layer_weights = self.hidden_layer_weights + delta_hidden_layer_weights
     self.hidden_layer_bias = self.hidden_layer_bias + delta_hidden_layer_bias
 
   
-  def train(self, inputs, labels, threshold=0.01):
+  def train(self, inputs, labels, threshold=0.1):
     squaredError = 2 * threshold
     epochs = 0
 
@@ -144,15 +144,17 @@ class Mlp:
       squaredError = 0
 
       for i in range(len(inputs)):
-        x = inputs[i]
-        y_expected = labels[i]
+        input = inputs[i]
+        label = labels[i]
 
-        y_obtained = self.feedforward(x)
+        results = self.feedforward(input)
 
-        error = np.subtract(y_expected, y_obtained)
-        squaredError += np.sum(np.power(error, 2))
+        y_obtained = results
+
+        error =  np.subtract(label, y_obtained)
+        squaredError = squaredError + np.sum(np.power(error, 2) )
         
-        self.backpropagation(error, x)
+        self.backpropagation(error, input)
 
       squaredError = squaredError / len(inputs)
 
