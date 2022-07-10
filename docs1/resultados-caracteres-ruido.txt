@@ -1,0 +1,48 @@
+Testes para arquivo - caracteres-ruido
+
+Label: A - Resultado obtido: A
+Label: B - Resultado obtido: B
+Label: C - Resultado obtido: C, E
+Label: D - Resultado obtido: Nenhum
+Label: E - Resultado obtido: K
+Label: J - Resultado obtido: D, J
+Label: K - Resultado obtido: B, K
+Label: A - Resultado obtido: Nenhum
+Label: B - Resultado obtido: B, D
+Label: C - Resultado obtido: C, E
+Label: D - Resultado obtido: D, J
+Label: E - Resultado obtido: C, E
+Label: J - Resultado obtido: D, J
+Label: K - Resultado obtido: E
+Label: A - Resultado obtido: D
+Label: B - Resultado obtido: B, K
+Label: C - Resultado obtido: A, C
+Label: D - Resultado obtido: B, K
+Label: E - Resultado obtido: E
+Label: J - Resultado obtido: A, J
+Label: K - Resultado obtido: C, E
+
+
+Matriz de confusão
+[[1 0 0 1 1 0 0]
+ [0 2 0 1 0 0 0]
+ [0 0 2 0 1 0 0]
+ [0 0 0 2 0 0 1]
+ [0 0 0 0 2 0 1]
+ [0 0 0 1 0 2 0]
+ [0 0 0 0 2 0 1]]
+
+              precision    recall  f1-score   support
+
+           A       0.33      0.33      0.33         3
+           B       0.60      1.00      0.75         3
+           C       0.60      1.00      0.75         3
+           D       0.20      0.33      0.25         3
+           E       0.33      0.67      0.44         3
+           J       0.75      1.00      0.86         3
+           K       0.25      0.33      0.29         3
+
+   micro avg       0.44      0.67      0.53        21
+   macro avg       0.44      0.67      0.52        21
+weighted avg       0.44      0.67      0.52        21
+ samples avg       0.40      0.67      0.49        21

@@ -2,7 +2,7 @@ from activation_function import SigmoidActivation
 from file_provider import FileProvider
 from mlp import Mlp
 import numpy as np
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, classification_report
 
 class Main:
     """
@@ -103,27 +103,29 @@ class Main:
 
         self.convert_negative_values_to_zero_in_matrix(inputs)
 
-        # Converte list para formato numpy.ndarray a fim de facilitar operaçoes matemáticas sobre essas estruturas
-        inputs = np.array(inputs)
-        labels = np.array(labels)
-
         return inputs, labels
 
-    def train_data(self, path):
+    def train_data(self, path, num_of_lines):
         """Função que vai ler os dados de um determinado caminho, obter um dataset disso, tratar esse dataset, organizando
         os dados no formato esperado pela classe `Mlp` e vai treinar esses dados.
 
         Parameters
         ----------
-        path : Caminho que contém o arquivo com os dados que serão treinados"""
+        path : Caminho que contém o arquivo com os dados que serão treinados
+        num_of_lines : número de linhas para ser lidas do arquivo"""
 
         dataset = self.file_provider.load_csv(path)
         inputs, labels = self.prepare_data(dataset)
-        print('weights hidden')
-        print(self.mlp.hidden_layer_weights.shape)
-        print(inputs.shape)
-        print(labels.shape)
-        self.mlp.train(inputs, labels)
+        inputs_to_train = []
+
+        for i in range(0, num_of_lines):
+            inputs_to_train.append(inputs[i])
+
+        # Converte list para formato numpy.ndarray a fim de facilitar operaçoes matemáticas sobre essas estruturas
+        inputs_to_train = np.array(inputs_to_train)
+        labels = np.array(labels)
+
+        self.mlp.train(inputs_to_train, labels)
 
     def test_data(self, path):
         """Função que vai ler os dados de um determinado caminho, obter um dataset disso, tratar esse dataset, organizando
@@ -135,12 +137,13 @@ class Main:
 
         dataset = self.file_provider.load_csv(path)
         inputs, labels = self.prepare_data(dataset)
+        labels = np.array(labels)
         result = self.mlp.feedforward(inputs)
         self.content_file_test_results = ""
         self.content_file_test_results += f"Testes para arquivo - {path}\n\n"
         file_content_result = self.format_test_results_output(labels, result) + "\n\n"
         self.content_file_test_results += file_content_result
-        self.content_file_test_results += f"Matriz de confusão\n{str(confusion_matrix(labels.argmax(axis=1), result.argmax(axis=1)))}"
+        self.content_file_test_results += f"Matriz de confusão\n{str(confusion_matrix(labels.argmax(axis=1), result.argmax(axis=1)))}\n"
         self.file_provider.write_txt('docs/resultados-'+path, self.content_file_test_results)
         
     def format_test_results_output(self, labels, results):
@@ -185,7 +188,11 @@ class Main:
 
 file_provider = FileProvider()
 sigmoid_activation = SigmoidActivation()
-main = Main(63, 15, 7, 0.1, 0.01, file_provider, sigmoid_activation)
-main.train_data('caracteres-limpo')
+main = Main(63, 15, 7, 0.1, 0.05, file_provider, sigmoid_activation)
+main.train_data('problemXOR')
+main.train_data('caracteres-limpo', 14)
+main.test_data('caracteres-limpo')
 main.test_data('caracteres-ruido')
 main.test_data('caracteres_ruido20')
+
+
