@@ -188,11 +188,17 @@ class Main:
 
 file_provider = FileProvider()
 sigmoid_activation = SigmoidActivation()
-main = Main(63, 15, 7, 0.1, 0.05, file_provider, sigmoid_activation)
-main.train_data('problemXOR')
+
+main = Main(63, 20, 7, 0.1, 0.001, file_provider, sigmoid_activation)
 main.train_data('caracteres-limpo', 14)
+
+print("Saídas para caracteres-limpo")
 main.test_data('caracteres-limpo')
+
+print("Saídas para caracteres-ruido")
 main.test_data('caracteres-ruido')
+
+print("Saídas para caracteres-ruido20")
 main.test_data('caracteres_ruido20')
 
 

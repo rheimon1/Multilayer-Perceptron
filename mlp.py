@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+np.set_printoptions(threshold=np.inf)
+
 class Mlp:
   """
   Classe que implementa a arquitetura de uma Mlp, implementando métodos que realizam

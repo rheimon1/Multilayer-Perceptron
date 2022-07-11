@@ -1,0 +1,33 @@
+Testes para arquivo - caracteres-ruido
+
+Label: A - Resultado obtido: A, C
+Label: B - Resultado obtido: E
+Label: C - Resultado obtido: B, C
+Label: D - Resultado obtido: D
+Label: E - Resultado obtido: E
+Label: J - Resultado obtido: D, J
+Label: K - Resultado obtido: K
+Label: A - Resultado obtido: J
+Label: B - Resultado obtido: B
+Label: C - Resultado obtido: B, C
+Label: D - Resultado obtido: C, D
+Label: E - Resultado obtido: E
+Label: J - Resultado obtido: D, J
+Label: K - Resultado obtido: K
+Label: A - Resultado obtido: C
+Label: B - Resultado obtido: D
+Label: C - Resultado obtido: A, C, D
+Label: D - Resultado obtido: E
+Label: E - Resultado obtido: E
+Label: J - Resultado obtido: D, J
+Label: K - Resultado obtido: K
+
+
+Matriz de confusão
+[[1 0 1 0 0 1 0]
+ [0 1 0 1 1 0 0]
+ [0 2 1 0 0 0 0]
+ [0 0 0 2 1 0 0]
+ [0 0 0 0 3 0 0]
+ [0 0 0 0 0 3 0]
+ [0 0 0 0 0 0 3]]
